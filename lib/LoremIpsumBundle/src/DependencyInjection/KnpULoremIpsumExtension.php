@@ -13,7 +13,7 @@ class KnpULoremIpsumExtension extends Extension
 {
 
     /**
-     * Loads a specific configuration.
+     * Loads a specific configuration
      *
      * @throws \Exception When provided tag is not defined in this extension
      */
@@ -21,6 +21,14 @@ class KnpULoremIpsumExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
+
+        // bind the configuration
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $definition = $container->getDefinition('knpu_lorem_ipsum.knpu_ipsum');
+        $definition->setArgument(0, $config['unicorns_are_real']);
+        $definition->setArgument(1, $config['min_sunshine']);
     }
 
     public function getAlias()
